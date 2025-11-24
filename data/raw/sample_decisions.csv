@@ -1,0 +1,11 @@
+worker_id,session,arm,difficulty,access_tier,device,lang,ai_conf,ai_correct,accepted,hi_conf_error
+W001,1,Calib,0,low,feature_2G,kn,0.72,1,1,0
+W001,2,None,1,mid,smart_3G,hi,0.35,1,0,0
+W001,3,Rationale,1,mid,smart_3G,hi,0.80,1,1,0
+W002,1,Calib,1,mid,smart_3G,hi,0.70,0,0,1
+W002,2,Counter,1,mid,feature_2G,kn,0.88,1,1,0
+W003,1,None,0,low,feature_2G,kn,0.65,1,1,0
+W003,2,Counter,0,low,feature_2G,kn,0.91,1,1,0
+W004,1,Rationale,1,high,smart_4G,en,0.83,1,1,0
+W004,2,Calib,1,high,smart_4G,en,0.76,1,1,0
+W004,3,Counter,1,high,smart_4G,en,0.93,1,1,0

@@ -1,0 +1,17 @@
+cd ~/Documents/Copilot
+
+cat > data/demo_logs.csv << "EOF"
+session,team_id,worker_id,group,access_modality,assist_style,y_true,y_hat,conf,override,correct_after_override
+1,1,101,A,feature_2G,None,1,0,0.62,1,1
+1,1,102,B,smartphone_3G,Calib,0,0,0.81,0,1
+1,2,201,A,whatsapp_en,Rationale,1,1,0.76,0,1
+1,2,202,B,ivr_hi,Calib,0,1,0.88,1,1
+2,1,101,A,feature_2G,Calib,1,1,0.83,0,1
+2,1,102,B,smartphone_3G,Counter,0,0,0.79,0,1
+2,2,201,A,whatsapp_en,None,1,0,0.55,1,0
+2,2,202,B,ivr_hi,Rationale,0,0,0.71,0,1
+3,1,101,A,feature_2G,Counter,1,1,0.91,0,1
+3,1,102,B,smartphone_3G,Calib,0,1,0.86,1,0
+3,2,201,A,whatsapp_en,Calib,1,1,0.77,0,1
+3,2,202,B,ivr_hi,None,0,0,0.63,0,1
+EOF
