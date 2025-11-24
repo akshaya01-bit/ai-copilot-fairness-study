@@ -58,3 +58,25 @@ Expected Calibration Error (ECE) and Brier score using p_model
 
 This mirrors the fairness and calibration measures described in the Methods
 section of the writing sample.
+---
+
+## Version 2 – Richer synthetic study
+
+This release extends the demo into a small, research-style artifact bundle:
+
+- `data/raw/sample_decisions_v2.csv` – ~thousands of synthetic AI + human decisions
+  across sessions, groups, and access tiers.
+- `data/processed/session_metrics_v2.csv` – session × group × access metrics
+  (accuracy, TPR/FPR, ECE).
+- `src/generate_synthetic_data.py` – script that regenerates the synthetic data.
+- `src/analyze_fairness_calibration.py` – analysis script that prints EO gaps, ADI,
+  and saves simple figures to `figures/`.
+
+### How to reproduce the Version 2 analysis
+
+```bash
+# from the repo root, with the venv activated
+pip install -r requirements.txt
+python src/generate_synthetic_data.py
+python src/analyze_fairness_calibration.py
+
