@@ -1,82 +1,87 @@
-# Copilot: Fairness- and Calibration-Aware AI Assistance (Version 1)
+# AI Co-pilot: Synthetic Fairness & Skill-Drift Dataset
 
-This repository contains **Version 1** of the research artifact that accompanies a
-writing sample on **AI co-pilots for community health workers (ASHAs) in low-resource
-settings**. The focus of this version is to provide a **minimal but complete synthetic
-dataset and analysis script** that mirror the methods described in the paper:
+> Status: **Research prototype** supporting a PhD application writing sample.  
+> All data are **synthetic only**; no real human or patient data are included.
 
-- Multi-arm assistance (`None`, `Rationale`, `Calib`, `Counter`)
-- Protected group **A** for fairness analysis
-- Access modalities (**feature phone / 2G**, **smartphone / 3G**, **IVR (Kannada)**, **text (Hindi)**)
-- Metrics: accuracy, TPR/FPR gaps, EO-style gap, calibration (ECE, Brier)
+This repository contains a small, self-contained synthetic dataset and generator
+script for an AI co-pilot study on:
 
-Later versions (v2, v3) will extend this with bandit-style adaptation, dynamic skill
-indices (SDI), and richer governance dashboards.
+- fairness across groups and access strata (device / connectivity / modality),
+- calibration (how well confidence matches accuracy),
+- and indicators of **skill drift vs. skill lift** for human decision-makers.
+
+It is designed to accompany a research **writing sample** on AI co-pilots,
+community health workers (ASHAs), and access-aware fairness in low-resource
+settings.
 
 ---
 
-## Repository structure (v1)
+## Repository Structure
 
 ```text
-Copilot/
-  data/
-    synthetic_copilot_logs_v1.csv      # synthetic deployment-like logs
-  src/
-    generate_synthetic_data_v1.py      # script to generate synthetic data
-    analyze_fairness_calibration_v1.py # fairness + calibration analysis
-  requirements.txt
-  README.md
+.
+├── README.md
+├── LICENSE
+├── requirements.txt
+├── src
+│   └── generate_synthetic_data.py
+└── data
+    ├── raw
+    │   └── sample_decisions_v2.csv        # row-level synthetic decisions
+    └── processed
+        └── session_metrics_v2.csv         # session × group × access metrics
+src/generate_synthetic_data.py
+Script that generates a richer synthetic dataset aligned with the paper’s
+setting: multiple workers, sessions, assistance arms, groups, and access tiers.
 
-data/synthetic_copilot_logs_v1.csv
-Synthetic session- and item-level logs reflecting the planned ASHA context:
-teams, sessions, assistance arm, protected group A_group, access modality
-(modality), human decisions, model probabilities, and timing.
+data/raw/sample_decisions_v2.csv
+Row-level synthetic decisions.
 
-src/generate_synthetic_data_v1.py
-Generates the synthetic dataset aligned with the paper’s setting:
+data/processed/session_metrics_v2.csv
+Aggregated session-level metrics used for fairness / calibration summaries.Data Design (High-Level)
 
-Teams and sessions
+The generator script simulates:
 
-Assistance arms (None, Rationale, Calib, Counter)
+Workers: 24 workers (W001–W024)
 
-Access modalities (feature_2G, smartphone_3G, ivr_kannada, text_hindi)
+Sessions: 6 sessions per worker
 
-Group-level fairness structure (A_group)
+Items per session: 40 tasks
+→ Total: 24 × 6 × 40 = 5,760 synthetic decisions
 
-Model probabilities p_model with mild miscalibration and group gaps
+Each decision row includes:
 
-src/analyze_fairness_calibration_v1.py
-Reads the synthetic CSV and computes:
+worker_id – worker identifier
 
-Overall human decision accuracy
+session – session index
 
-TPR/FPR by protected group A_group
+item_id – item within the session
 
-Equalized-odds style gap: |TPR₀ − TPR₁| + |FPR₀ − FPR₁|
+group – protected group indicator (e.g., community/region)
 
-Expected Calibration Error (ECE) and Brier score using p_model
+access_tier – "feature_2G", "smart_3G", "smart_4G"
 
-This mirrors the fairness and calibration measures described in the Methods
-section of the writing sample.
----
+modality – "voice" vs "text"
 
-## Version 2 – Richer synthetic study
+assist_arm – assistance style: "None", "Rationale", "Calib", "Counter"
 
-This release extends the demo into a small, research-style artifact bundle:
+y_true – ground-truth label (e.g., escalate vs. not)
 
-- `data/raw/sample_decisions_v2.csv` – ~thousands of synthetic AI + human decisions
-  across sessions, groups, and access tiers.
-- `data/processed/session_metrics_v2.csv` – session × group × access metrics
-  (accuracy, TPR/FPR, ECE).
-- `src/generate_synthetic_data.py` – script that regenerates the synthetic data.
-- `src/analyze_fairness_calibration.py` – analysis script that prints EO gaps, ADI,
-  and saves simple figures to `figures/`.
+ai_conf – AI confidence score in [0,1]
 
-### How to reproduce the Version 2 analysis
+ai_correct – whether the AI suggestion is correct
 
-```bash
-# from the repo root, with the venv activated
-pip install -r requirements.txt
-python src/generate_synthetic_data.py
-python src/analyze_fairness_calibration.py
+human_accept – whether the human accepted the AI suggestion
+
+human_correct – whether the final human decision is correct
+
+high_conf_error – cases where confident AI is wrong
+
+caught_high_conf_error – whether the human caught those errors
+
+The processed file aggregates these into session-level metrics by
+session × access_tier × group
+cd ~/Documents
+git clone <YOUR-REPO-URL> Copilot
+cd Copilot
 
