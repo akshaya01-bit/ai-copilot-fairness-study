@@ -82,6 +82,6 @@ caught_high_conf_error – whether the human caught those errors
 The processed file aggregates these into session-level metrics by
 session × access_tier × group
 cd ~/Documents
-git clone <YOUR-REPO-URL> Copilot
+git clone
 cd Copilot
 
